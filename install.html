@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6366f1">
+  <title>Install QuickLinks - Get the App</title>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 0;
+    }
+    
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    
+    .app-icon-large {
+      width: 120px;
+      height: 120px;
+      border-radius: 28px;
+      margin: 0 auto 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .app-icon-large img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    h1 {
+      font-size: 42px;
+      font-weight: 900;
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+    }
+    
+    .subtitle {
+      font-size: 18px;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+    
+    /* Install button */
+    .install-button {
+      display: block;
+      width: 100%;
+      padding: 18px 24px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #667eea;
+      border: none;
+      border-radius: 16px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .install-button:hover {
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .install-button:active {
+      transform: translateY(0);
+    }
+    
+    .open-app-button {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .open-app-button:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+    
+    /* Instructions card */
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 30px;
+      margin-bottom: 20px;
+    }
+    
+    .platform-selector {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+    
+    .platform-tab {
+      flex: 1;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .platform-tab:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .platform-tab.active {
+      background: rgba(255, 255, 255, 0.95);
+      color: #667eea;
+      border-color: rgba(255, 255, 255, 0.95);
+    }
+    
+    .platform-content {
+      display: none;
+    }
+    
+    .platform-content.active {
+      display: block;
+    }
+    
+    .step {
+      margin-bottom: 24px;
+    }
+    
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #667eea;
+      border-radius: 50%;
+      font-weight: 800;
+      margin-right: 12px;
+      font-size: 16px;
+    }
+    
+    .step-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .step-desc {
+      opacity: 0.9;
+      line-height: 1.6;
+      padding-left: 44px;
+    }
+    
+    .icon-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-left: 44px;
+      margin-top: 8px;
+    }
+    
+    .icon-label svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    /* Features */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 30px;
+    }
+    
+    .feature {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 16px;
+      text-align: center;
+    }
+    
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .feature-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .feature-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .feature-desc {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    
+    /* Hidden message */
+    .hidden-message {
+      display: none;
+      background: rgba(34, 197, 94, 0.2);
+      border: 2px solid rgba(34, 197, 94, 0.5);
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .hidden-message.show {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .app-icon-large {
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .card {
+      animation: fadeInUp 0.6s ease backwards;
+    }
+    
+    .card:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+    
+    .card:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="app-icon-large">
+        <img src="icon-512.png" alt="Oki App" style="width: 100%; height: 100%; object-fit: cover; border-radius: 28px;">
+      </div>
+      <h1>Oki App</h1>
+      <p class="subtitle">MikoOki's stream hub & quick links</p>
+    </div>
+    
+    <!-- Success message (shown after install) -->
+    <div class="hidden-message" id="successMessage">
+      ✓ App installed! You can now find Oki App on your home screen
+    </div>
+    
+    <!-- Android Auto-Install Button -->
+    <button class="install-button" id="installButton" style="display: none;">
+      <span>📱 Install MikoOki App</span>
+    </button>
+    
+    <!-- Installation Instructions -->
+    <div class="card" id="instructionsCard">
+      <div class="platform-selector" id="platformSelector">
+        <button class="platform-tab active" onclick="showPlatform('ios')">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+          </svg>
+          iOS (iPhone)
+        </button>
+        <button class="platform-tab" onclick="showPlatform('android')">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24a11.5 11.5 0 00-8.94 0L5.65 5.67c-.19-.28-.54-.37-.83-.22-.3.16-.42.54-.26.85l1.84 3.18C2.92 11.03 1 14.22 1 17.8h22c0-3.58-1.92-6.77-5.4-8.32zM8.06 15.2c-.66 0-1.2-.54-1.2-1.2s.54-1.2 1.2-1.2 1.2.54 1.2 1.2-.54 1.2-1.2 1.2zm7.88 0c-.66 0-1.2-.54-1.2-1.2s.54-1.2 1.2-1.2 1.2.54 1.2 1.2-.54 1.2-1.2 1.2z"/>
+          </svg>
+          Android
+        </button>
+      </div>
+      
+      <!-- Android Easy Install Message -->
+      <div class="platform-content" id="android-auto" style="display: none;">
+        <div style="text-align: center; padding: 20px;">
+          <svg width="80" height="80" fill="currentColor" viewBox="0 0 24 24" style="margin: 0 auto 20px; opacity: 0.8;">
+            <path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24a11.5 11.5 0 00-8.94 0L5.65 5.67c-.19-.28-.54-.37-.83-.22-.3.16-.42.54-.26.85l1.84 3.18C2.92 11.03 1 14.22 1 17.8h22c0-3.58-1.92-6.77-5.4-8.32zM8.06 15.2c-.66 0-1.2-.54-1.2-1.2s.54-1.2 1.2-1.2 1.2.54 1.2 1.2-.54 1.2-1.2 1.2zm7.88 0c-.66 0-1.2-.54-1.2-1.2s.54-1.2 1.2-1.2 1.2.54 1.2 1.2-.54 1.2-1.2 1.2z"/>
+          </svg>
+          <h3 style="font-size: 24px; margin-bottom: 12px;">You're on Android! 🎉</h3>
+          <p style="opacity: 0.9; line-height: 1.6; font-size: 16px;">
+            Just tap the <strong>"Install MikoOki App"</strong> button above and you're done!
+            <br><br>
+            The app will be added to your home screen automatically.
+          </p>
+        </div>
+      </div>
+      
+      <!-- iOS Instructions -->
+      <div class="platform-content active" id="ios-content">
+        <div class="step">
+          <div class="step-title">
+            <span class="step-number">1</span>
+            Open in Safari
+          </div>
+          <p class="step-desc">Make sure you're viewing this page in Safari browser (not Chrome or Firefox)</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-title">
+            <span class="step-number">2</span>
+            Tap the Share button
+          </div>
+          <p class="step-desc">Look for the share icon at the bottom of your screen</p>
+          <div class="icon-label">
+            <svg fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/>
+            </svg>
+            Share Icon
+          </div>
+        </div>
+        
+        <div class="step">
+          <div class="step-title">
+            <span class="step-number">3</span>
+            Add to Home Screen
+          </div>
+          <p class="step-desc">Scroll down and select "Add to Home Screen"</p>
+          <div class="icon-label">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Add to Home Screen
+          </div>
+        </div>
+        
+        <div class="step">
+          <div class="step-title">
+            <span class="step-number">4</span>
+            Confirm & Done!
+          </div>
+          <p class="step-desc">Tap "Add" in the top right corner. Oki App will appear on your home screen!</p>
+        </div>
+      </div>
+      
+      <!-- Android Instructions -->
+      <div class="platform-content" id="android-content">
+        <div class="step">
+          <div class="step-title">
+            <span class="step-number">1</span>
+            Open in Chrome
+          </div>
+          <p class="step-desc">Make sure you're viewing this page in Chrome browser</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-title">
+            <span class="step-number">2</span>
+            Tap the menu (three dots)
+          </div>
+          <p class="step-desc">Look for the menu icon in the top right corner</p>
+          <div class="icon-label">
+            <svg fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            Menu
+          </div>
+        </div>
+        
+        <div class="step">
+          <div class="step-title">
+            <span class="step-number">3</span>
+            Install app or Add to Home screen
+          </div>
+          <p class="step-desc">You may see "Install app" or "Add to Home screen" - both work!</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-title">
+            <span class="step-number">4</span>
+            Confirm & Done!
+          </div>
+          <p class="step-desc">Tap "Install" or "Add". Oki App will appear on your home screen!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Platform tabs
+    function showPlatform(platform) {
+      // Update tabs
+      document.querySelectorAll('.platform-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      event.target.closest('.platform-tab').classList.add('active');
+      
+      // Update content
+      document.querySelectorAll('.platform-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      // Show android-auto if available, otherwise show manual instructions
+      if (platform === 'android' && deferredPrompt) {
+        document.getElementById('android-auto').style.display = 'block';
+      } else {
+        document.getElementById(platform + '-content').classList.add('active');
+      }
+    }
+    
+    // Open the app
+    function openApp() {
+      window.location.href = 'app.html';
+    }
+    
+    // PWA Install prompt
+    let deferredPrompt;
+    const installButton = document.getElementById('installButton');
+    
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installButton.style.display = 'block';
+      
+      // If on Android, show the easy install message instead of manual steps
+      const isAndroid = /Android/.test(navigator.userAgent);
+      if (isAndroid) {
+        // Hide the platform selector since we have auto-install
+        document.getElementById('platformSelector').style.display = 'none';
+        // Show the simple message
+        document.getElementById('android-auto').style.display = 'block';
+        document.querySelectorAll('.platform-content').forEach(content => {
+          content.classList.remove('active');
+        });
+      }
+    });
+    
+    installButton.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        
+        if (outcome === 'accepted') {
+          document.getElementById('successMessage').classList.add('show');
+          installButton.style.display = 'none';
+          
+          // Update the card to show success message
+          document.getElementById('instructionsCard').innerHTML = `
+            <div style="text-align: center; padding: 40px 20px;">
+              <div style="width: 80px; height: 80px; background: rgba(34, 197, 94, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <svg width="40" height="40" fill="none" stroke="#22c55e" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <h3 style="font-size: 28px; margin-bottom: 12px;">App Installed! 🎉</h3>
+              <p style="opacity: 0.9; line-height: 1.6; font-size: 16px;">
+                Oki App has been added to your home screen.
+                <br><br>
+                You can now launch it like any other app!
+              </p>
+            </div>
+          `;
+        }
+        
+        deferredPrompt = null;
+      }
+    });
+    
+    // Auto-detect platform for default view
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/.test(navigator.userAgent);
+    
+    // Set default tab (but don't show content yet if we might have auto-install)
+    if (isIOS) {
+      document.querySelector('[onclick="showPlatform(\'ios\')"]').click();
+    } else if (isAndroid && !deferredPrompt) {
+      // Only auto-select Android tab if we don't have the install prompt yet
+      // (if we do have it, the beforeinstallprompt handler will take care of it)
+      document.querySelector('[onclick="showPlatform(\'android\')"]').click();
+    }
+  </script>
+</body>
+</html>

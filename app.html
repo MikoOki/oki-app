@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Oki App">
+  <meta name="theme-color" content="#0f172a">
+  <title>Oki App</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #fff;
+      overflow-x: hidden;
+      min-height: 100vh;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+    
+    .app-container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      padding-bottom: 40px;
+    }
+    
+    /* Status bar spacer for iOS */
+    .status-bar {
+      height: 20px;
+    }
+    
+    /* Header */
+    .header {
+      padding: 40px 0 30px 0;
+      text-align: center;
+    }
+    
+    .greeting {
+      font-size: 32px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    /* Search bar */
+    .search-container {
+      margin: 20px 0 30px 0;
+    }
+    
+    .search-bar {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      color: #fff;
+      font-size: 16px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    
+    .search-bar:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(96, 165, 250, 0.5);
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+    }
+    
+    .search-bar::placeholder {
+      color: #64748b;
+    }
+    
+    /* Section title */
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #94a3b8;
+      margin-bottom: 16px;
+      padding-left: 4px;
+    }
+    
+    /* App grid */
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    
+    .app-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .app-icon:active {
+      transform: scale(0.9);
+    }
+    
+    .icon-wrapper {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .icon-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+      opacity: 0.5;
+    }
+    
+    .icon-wrapper svg {
+      width: 32px;
+      height: 32px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .app-name {
+      font-size: 12px;
+      color: #fff;
+      text-align: center;
+      font-weight: 500;
+      max-width: 80px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    /* Quick links section */
+    .quick-links {
+      margin-top: 30px;
+    }
+    
+    .link-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    
+    .link-card:active {
+      transform: scale(0.98);
+      background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .link-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .link-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .link-info {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .link-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    
+    .link-url {
+      font-size: 13px;
+      color: #64748b;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .link-arrow {
+      color: #64748b;
+      flex-shrink: 0;
+    }
+    
+    .home-indicator {
+      position: fixed;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 134px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 100px;
+    }
+    
+    /* Live Status Card */
+    .live-card {
+      background: linear-gradient(135deg, rgba(145, 70, 255, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+      border: 2px solid rgba(145, 70, 255, 0.3);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    
+    .live-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #9146ff, #772ce8, #9146ff);
+      background-size: 200% 100%;
+      animation: shimmer 2s linear infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #ef4444;
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.2); }
+    }
+    
+    .offline-badge {
+      background: rgba(100, 116, 139, 0.2);
+      border-color: rgba(100, 116, 139, 0.5);
+      color: #94a3b8;
+    }
+    
+    .stream-preview {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .stream-preview:active {
+      opacity: 0.8;
+    }
+    
+    .preview-image {
+      width: 120px;
+      height: 68px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .stream-info {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .stream-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .stream-game {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 4px;
+    }
+    
+    .viewer-count {
+      font-size: 13px;
+      color: #ef4444;
+      font-weight: 600;
+    }
+    
+    /* Schedule Widget */
+    .schedule-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .schedule-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .schedule-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(139, 92, 246, 0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #a78bfa;
+    }
+    
+    .schedule-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    
+    .schedule-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .schedule-item:last-child {
+      border-bottom: none;
+    }
+    
+    .schedule-date {
+      min-width: 70px;
+      text-align: center;
+    }
+    
+    .schedule-day {
+      font-size: 12px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .schedule-time {
+      font-size: 16px;
+      font-weight: 700;
+      color: #a78bfa;
+    }
+    
+    .schedule-details {
+      flex: 1;
+    }
+    
+    .schedule-stream-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .schedule-category {
+      font-size: 13px;
+      color: #64748b;
+    }
+    
+    .no-schedule {
+      text-align: center;
+      padding: 20px;
+      color: #64748b;
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .app-icon {
+      animation: fadeInUp 0.5s ease backwards;
+    }
+    
+    .app-icon:nth-child(1) { animation-delay: 0.05s; }
+    .app-icon:nth-child(2) { animation-delay: 0.1s; }
+    .app-icon:nth-child(3) { animation-delay: 0.15s; }
+    .app-icon:nth-child(4) { animation-delay: 0.2s; }
+    .app-icon:nth-child(5) { animation-delay: 0.25s; }
+    .app-icon:nth-child(6) { animation-delay: 0.3s; }
+    .app-icon:nth-child(7) { animation-delay: 0.35s; }
+    .app-icon:nth-child(8) { animation-delay: 0.4s; }
+    
+    .link-card {
+      animation: fadeInUp 0.5s ease backwards;
+    }
+    
+    .link-card:nth-child(1) { animation-delay: 0.45s; }
+    .link-card:nth-child(2) { animation-delay: 0.5s; }
+    .link-card:nth-child(3) { animation-delay: 0.55s; }
+  </style>
+</head>
+<body>
+  <div class="status-bar"></div>
+  
+  <div class="app-container">
+    <!-- Header -->
+    <div class="header">
+      <div class="greeting">MikoOki's Hub</div>
+    </div>
+    
+    <!-- Live Status Card -->
+    <div id="liveStatusCard" style="display: none;">
+      <!-- Will be populated by JavaScript -->
+    </div>
+    
+    <!-- Schedule Widget -->
+    <div id="scheduleWidget" style="display: none;">
+      <!-- Will be populated by JavaScript -->
+    </div>
+    
+    <!-- Favorite apps -->
+    <div class="section-title">Quick Links</div>
+    <div class="apps-grid" id="appsGrid">
+      <!-- Apps will be dynamically inserted here -->
+    </div>
+  </div>
+  
+  <div class="home-indicator"></div>
+
+  <script>
+    // ========== TWITCH CONFIGURATION ==========
+    const TWITCH_CHANNEL_NAME = 'mikooki';
+    
+    // IMPORTANT: Replace this with your Cloudflare Worker URL after deployment
+    // Leave as empty string for now if you haven't deployed the worker yet
+    const SCHEDULE_API_URL = ''; // e.g., 'https://twitch-schedule.YOUR-SUBDOMAIN.workers.dev'
+    
+    // Check if stream is live by showing the embed
+    async function checkLiveStatus() {
+      const liveStatusCard = document.getElementById('liveStatusCard');
+      
+      // Show the embed - Twitch will handle showing if live or offline screen
+      liveStatusCard.style.display = 'block';
+      liveStatusCard.className = 'live-card';
+      
+      // We'll always show the embed and let Twitch handle the rest
+      // When offline, Twitch shows the offline screen automatically
+      liveStatusCard.innerHTML = `
+        <div style="margin-bottom: 12px;">
+          <div style="font-size: 18px; font-weight: 700; color: #fff;">
+            ${TWITCH_CHANNEL_NAME}
+          </div>
+        </div>
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; background: #18181b;">
+          <iframe 
+            src="https://player.twitch.tv/?channel=${TWITCH_CHANNEL_NAME}&parent=${window.location.hostname}&muted=false&autoplay=false"
+            height="100%"
+            width="100%"
+            style="position: absolute; top: 0; left: 0; border: none;"
+            allowfullscreen>
+          </iframe>
+        </div>
+      `;
+    }
+    
+    // Get Twitch schedule from backend API
+    async function getSchedule() {
+      const scheduleWidget = document.getElementById('scheduleWidget');
+      
+      // If no API URL is set, hide the schedule
+      if (!SCHEDULE_API_URL) {
+        scheduleWidget.style.display = 'none';
+        return;
+      }
+      
+      try {
+        const response = await fetch(SCHEDULE_API_URL);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch schedule');
+        }
+        
+        const data = await response.json();
+        
+        scheduleWidget.style.display = 'block';
+        scheduleWidget.className = 'schedule-card';
+        
+        if (data.segments && data.segments.length > 0) {
+          const items = data.segments.slice(0, 5).map(segment => {
+            const startDate = new Date(segment.start_time);
+            const dayName = startDate.toLocaleDateString('en-US', { weekday: 'short' });
+            const time = startDate.toLocaleTimeString('en-US', { 
+              hour: 'numeric', 
+              minute: '2-digit', 
+              hour12: true 
+            });
+            
+            return `
+              <div class="schedule-item">
+                <div class="schedule-date">
+                  <div class="schedule-day">${dayName}</div>
+                  <div class="schedule-time">${time}</div>
+                </div>
+                <div class="schedule-details">
+                  <div class="schedule-stream-title">${segment.title || 'Stream'}</div>
+                  <div class="schedule-category">${segment.category?.name || 'Just Chatting'}</div>
+                </div>
+              </div>
+            `;
+          }).join('');
+          
+          scheduleWidget.innerHTML = `
+            <div class="schedule-header">
+              <div class="schedule-icon">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div class="schedule-title">Upcoming Streams</div>
+            </div>
+            ${items}
+          `;
+        } else {
+          // No scheduled streams
+          scheduleWidget.innerHTML = `
+            <div class="schedule-header">
+              <div class="schedule-icon">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div class="schedule-title">Upcoming Streams</div>
+            </div>
+            <div class="no-schedule">
+              No scheduled streams at the moment. Follow on Twitch for updates!
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error('Error getting schedule:', error);
+        // Hide schedule widget on error
+        scheduleWidget.style.display = 'none';
+      }
+    }
+    
+    // Initialize Twitch features
+    checkLiveStatus();
+    getSchedule();
+    
+    // Refresh schedule every 5 minutes
+    setInterval(getSchedule, 300000);
+    
+    // ========== REST OF THE ORIGINAL CODE ==========
+    // Your bookmarks - add more here!
+    const bookmarks = [
+      {
+        id: 1,
+        title: "Card Club",
+        url: "https://mikooki-card-club.pages.dev/",
+        icon: "package",
+        color: "#FF6B9D",
+        favorite: true
+      },
+      {
+        id: 2,
+        title: "Inventory",
+        url: "https://mikooki-inventory-website.pages.dev/",
+        icon: "package",
+        color: "#60a5fa",
+        favorite: true
+      },
+      {
+        id: 3,
+        title: "Printer Submit",
+        url: "https://mikooki-printer-submit.pages.dev/",
+        icon: "printer",
+        color: "#a78bfa",
+        favorite: true
+      },
+      // Add more bookmarks here:
+      // {
+      //   id: 4,
+      //   title: "Your Site",
+      //   url: "https://example.com",
+      //   icon: "code", // printer, code, globe, twitch, package, game
+      //   color: "#4ECDC4",
+      //   favorite: true
+      // },
+    ];
+
+    // Icon SVGs
+    const icons = {
+      printer: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>',
+      code: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>',
+      globe: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>',
+      twitch: '<svg fill="currentColor" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>',
+      package: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>',
+      game: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path></svg>'
+    };
+
+    // Render apps grid (favorites)
+    function renderApps() {
+      const appsGrid = document.getElementById('appsGrid');
+      const favorites = bookmarks.filter(b => b.favorite);
+      
+      appsGrid.innerHTML = favorites.map(bookmark => `
+        <a href="${bookmark.url}" class="app-icon" target="_blank" rel="noopener noreferrer">
+          <div class="icon-wrapper" style="background: linear-gradient(135deg, ${bookmark.color} 0%, ${bookmark.color}CC 100%);">
+            ${icons[bookmark.icon] || icons.globe}
+          </div>
+          <div class="app-name">${bookmark.title}</div>
+        </a>
+      `).join('');
+    }
+
+    // Initialize
+    renderApps();
+
+    // Service Worker registration for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {
+        // Silently fail if SW registration fails
+      });
+    }
+  </script>
+</body>
+</html>

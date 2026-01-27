@@ -1,0 +1,13 @@
+# Don't commit these files with real credentials
+.env
+*.env
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo

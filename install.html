@@ -313,6 +313,11 @@
       <p class="subtitle">MikoOki's stream hub & quick links</p>
     </div>
     
+    <!-- Preview URL Warning -->
+    <div class="hidden-message" id="previewWarning" style="background: rgba(251, 191, 36, 0.2); border-color: rgba(251, 191, 36, 0.5); color: #fbbf24;">
+      ⚠️ You're on a preview deployment! For the production app, use your main Cloudflare Pages URL (not the preview URL with hash).
+    </div>
+    
     <!-- Success message (shown after install) -->
     <div class="hidden-message" id="successMessage">
       ✓ App installed! You can now find Oki App on your home screen
@@ -446,6 +451,35 @@
   </div>
 
   <script>
+    // Check if on preview deployment URL
+    (function() {
+      const currentUrl = window.location.hostname;
+      // Cloudflare Pages preview URLs typically have patterns like:
+      // - hash-prefix (e.g., abc123-oki-app.pages.dev)
+      // - branch names
+      // Production URLs are usually just: oki-app.pages.dev
+      const isPreview = currentUrl.includes('-') && 
+                       currentUrl.split('.').length > 2 && 
+                       !currentUrl.startsWith('oki-app.pages.dev') &&
+                       !currentUrl.includes('mikooki.github.io');
+      
+      if (isPreview) {
+        const warning = document.getElementById('previewWarning');
+        if (warning) {
+          warning.classList.add('show');
+          // Add link to production
+          const prodLink = document.createElement('a');
+          prodLink.href = 'https://oki-app.pages.dev/install.html';
+          prodLink.style.color = '#fbbf24';
+          prodLink.style.textDecoration = 'underline';
+          prodLink.style.marginLeft = '8px';
+          prodLink.textContent = 'Go to production URL →';
+          prodLink.target = '_blank';
+          warning.appendChild(prodLink);
+        }
+      }
+    })();
+    
     // Platform tabs
     function showPlatform(platform) {
       // Update tabs

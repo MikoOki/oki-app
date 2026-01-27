@@ -1,0 +1,6 @@
+# Cloudflare Pages redirects
+# This file helps with routing
+
+/app.html /app.html 200
+/install.html /install.html 200
+/ /install.html 200

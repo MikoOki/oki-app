@@ -1,7 +1,11 @@
 const CACHE_NAME = 'quicklinks-v1';
 const urlsToCache = [
-  '/app.html',
-  '/install.html'
+  './app.html',
+  './install.html',
+  './',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 // Install event - cache files

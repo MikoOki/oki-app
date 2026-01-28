@@ -365,9 +365,12 @@
         <div class="step">
           <div class="step-title">
             <span class="step-number">1</span>
-            Install with one tap
+            Tap Install — then tap "Add to Home Screen"
           </div>
-          <p class="step-desc">Tap the <strong>"Install Oki App"</strong> button above. Your share menu will open — then choose <strong>"Add to Home Screen"</strong>.</p>
+          <p class="step-desc">Tap the button below. Your <strong>Share</strong> menu will open. Scroll down in that menu and tap <strong>"Add to Home Screen"</strong> (it has a plus icon).</p>
+          <p class="step-desc" style="margin-top: 8px; padding: 12px; background: rgba(96, 165, 250, 0.15); border-radius: 8px; border-left: 3px solid #60a5fa;">
+            💡 The Install button opens Share. You must then choose <strong>Add to Home Screen</strong> — iOS doesn't let us open that directly.
+          </p>
           <button type="button" class="install-button" id="iosInstallButton" style="margin-top: 12px; width: auto; padding: 14px 24px;">
             📱 Install Oki App
           </button>
@@ -376,26 +379,20 @@
         <div class="step">
           <div class="step-title">
             <span class="step-number">2</span>
-            Or add manually: tap Share
+            Tap "Add" → Done
           </div>
-          <p class="step-desc">Open the app first (button below), then tap the share icon at the bottom of your screen</p>
-          <a href="app.html" class="install-button open-app-button" style="margin-top: 12px; text-decoration: none; display: inline-block; width: auto; padding: 14px 24px;">
-            📱 Open Oki App
-          </a>
-          <div class="icon-label">
-            <svg fill="currentColor" viewBox="0 0 24 24">
-              <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/>
-            </svg>
-            Share Icon
-          </div>
+          <p class="step-desc">On the next screen, tap <strong>"Add"</strong> in the top right. Oki App will appear on your home screen!</p>
         </div>
         
         <div class="step">
           <div class="step-title">
             <span class="step-number">3</span>
-            Add to Home Screen → Confirm
+            Or add manually
           </div>
-          <p class="step-desc">Scroll down, select "Add to Home Screen", then tap "Add". Done!</p>
+          <p class="step-desc">Open the app (button below), then tap the <strong>Share</strong> icon at the bottom → <strong>Add to Home Screen</strong>.</p>
+          <a href="app.html" class="install-button open-app-button" style="margin-top: 12px; text-decoration: none; display: inline-block; width: auto; padding: 14px 24px;">
+            📱 Open Oki App
+          </a>
         </div>
       </div>
       
@@ -521,11 +518,15 @@
       `;
     }
     
-    // iOS: "Install" = open share sheet (Share → Add to Home Screen)
+    // iOS: "Install" = open share sheet → user taps "Add to Home Screen"
     async function triggerIOSInstall() {
       if (!navigator.share) {
         window.location.href = 'app.html';
         return;
+      }
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      if (isIOS) {
+        alert('When the Share menu opens, scroll down and tap "Add to Home Screen" (➕ icon).');
       }
       const appUrl = new URL('app.html', location.href).href;
       try {
